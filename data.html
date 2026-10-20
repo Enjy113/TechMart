@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechMart - Products Catalog</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">TechMart</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="validation.html">Register</a>
+      <a href="data.html" class="active">Products</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Product Catalog</h2>
+
+    <div class="table-controls">
+      <input type="text" id="searchBox" placeholder="Search product by name or category...">
+      <div class="sort-buttons">
+        <button id="sortName" class="btn btn-small">Sort by Name</button>
+        <button id="sortPrice" class="btn btn-small">Sort by Price</button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Price ($)</th>
+            <th>Stock</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody">
+          <!-- Rows will be injected by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 TechMart. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const products = [
+      { id: 101, name: "Wireless Headphones", category: "Audio", price: 120, stock: 45 },
+      { id: 102, name: "Mechanical Keyboard", category: "Accessories", price: 85, stock: 20 },
+      { id: 103, name: "Gaming Mouse", category: "Accessories", price: 50, stock: 60 },
+      { id: 104, name: "4K Monitor", category: "Displays", price: 320, stock: 15 },
+      { id: 105, name: "Smartwatch Pro", category: "Wearables", price: 210, stock: 30 },
+      { id: 106, name: "USB-C Docking Station", category: "Accessories", price: 95, stock: 25 },
+      { id: 107, name: "Bluetooth Speaker", category: "Audio", price: 70, stock: 40 }
+    ];
+
+    let currentProducts = [...products];
+
+    function renderTable(data) {
+      const tbody = document.getElementById('productTableBody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No products found</td></tr>';
+        return;
+      }
+
+      data.forEach(item => {
+        const row = `
+          <tr>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${item.category}</td>
+            <td>$${item.price}</td>
+            <td>${item.stock}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    // Initial render
+    renderTable(currentProducts);
+
+    // Live Filter Search
+    document.getElementById('searchBox').addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const filtered = currentProducts.filter(item => 
+        item.name.toLowerCase().includes(searchTerm) || 
+        item.category.toLowerCase().includes(searchTerm)
+      );
+      renderTable(filtered);
+    });
+
+    // Sort by Name
+    let nameAsc = true;
+    document.getElementById('sortName').addEventListener('click', function() {
+      currentProducts.sort((a, b) => nameAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+      nameAsc = !nameAsc;
+      renderTable(currentProducts);
+    });
+
+    // Sort by Price
+    let priceAsc = true;
+    document.getElementById('sortPrice').addEventListener('click', function() {
+      currentProducts.sort((a, b) => priceAsc ? a.price - b.price : b.price - a.price);
+      priceAsc = !priceAsc;
+      renderTable(currentProducts);
+    });
+  </script>
+</body>
+</html>

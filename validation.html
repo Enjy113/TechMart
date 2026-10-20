@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechMart - Registration</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">TechMart</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="validation.html" class="active">Register</a>
+      <a href="data.html">Products</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="form-card">
+      <h2>Create New Account</h2>
+      <form id="registerForm" novalidate>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Enter your full name">
+          <small class="error" id="nameError"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" placeholder="Enter your email">
+          <small class="error" id="emailError"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter password (min 8 chars)">
+          <small class="error" id="passwordError"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" placeholder="Confirm your password">
+          <small class="error" id="confirmPasswordError"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" placeholder="Enter your age">
+          <small class="error" id="ageError"></small>
+        </div>
+
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 TechMart. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let isValid = true;
+
+      // Clear previous errors
+      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const age = document.getElementById('age').value.trim();
+
+      // Name Validation
+      if (!name) {
+        document.getElementById('nameError').textContent = 'Name is required.';
+        isValid = false;
+      }
+
+      // Email Validation
+      const emailPattern = /^[^s@]+@[^s@]+.[^s@]+$/;
+      if (!email) {
+        document.getElementById('emailError').textContent = 'Email is required.';
+        isValid = false;
+      } else if (!emailPattern.test(email)) {
+        document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+        isValid = false;
+      }
+
+      // Password Validation
+      if (!password) {
+        document.getElementById('passwordError').textContent = 'Password is required.';
+        isValid = false;
+      } else if (password.length < 8) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 8 characters.';
+        isValid = false;
+      }
+
+      // Confirm Password Validation
+      if (!confirmPassword) {
+        document.getElementById('confirmPasswordError').textContent = 'Please confirm your password.';
+        isValid = false;
+      } else if (password !== confirmPassword) {
+        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+        isValid = false;
+      }
+
+      // Age Validation
+      if (!age) {
+        document.getElementById('ageError').textContent = 'Age is required.';
+        isValid = false;
+      } else if (parseInt(age) < 18) {
+        document.getElementById('ageError').textContent = 'You must be at least 18 years old.';
+        isValid = false;
+      }
+
+      if (isValid) {
+        alert('Registration successful!');
+        this.reset();
+      }
+    });
+  </script>
+</body>
+</html>
